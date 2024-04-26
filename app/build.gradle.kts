@@ -1,4 +1,3 @@
-import com.android.ide.common.resources.readFromSourceSetPathsFile
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -74,7 +73,9 @@ android {
 }
 
 dependencies {
-
+  // Maps SDK for Android
+  implementation("com.google.android.gms:play-services-maps:18.2.0")
+  implementation("com.google.maps.android:maps-compose:4.4.0")
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)

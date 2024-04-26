@@ -1,4 +1,4 @@
-package com.example.gastion
+package com.example.gastion.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
