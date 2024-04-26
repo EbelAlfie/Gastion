@@ -7,10 +7,6 @@ plugins {
   id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
-val secret = Properties().also {
-  it.load(FileInputStream(File(rootProject.rootDir, "secret.properties")))
-}
-
 android {
   namespace = "com.example.gastion"
   compileSdk = 34
@@ -26,7 +22,6 @@ android {
     vectorDrawables {
       useSupportLibrary = true
     }
-    buildConfigField("String", "PLACES_API_KEY", secret.getProperty("place.apikey"))
   }
 
   secrets {
@@ -76,6 +71,7 @@ dependencies {
   // Maps SDK for Android
   implementation("com.google.android.gms:play-services-maps:18.2.0")
   implementation("com.google.maps.android:maps-compose:4.4.0")
+  implementation("com.google.android.gms:play-services-location:21.0.1")
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
