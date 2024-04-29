@@ -16,26 +16,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.gastion.ui.theme.GastionTheme
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
       GastionTheme {
-        val launcher = rememberLauncherForActivityResult(
-          contract = ActivityResultContracts.StartActivityForResult()
-        ) {
-          Log.d("RESULT", it.toString())
-        }
         GasMap(
           modifier = Modifier.fillMaxSize()
         )
-        Button(onClick = {
-          val toIntent = Intent(this, ResultAC::class.java)
-          launcher.launch(toIntent)
-        }) {
-         Text("OI ke sini")
-        }
       }
     }
   }

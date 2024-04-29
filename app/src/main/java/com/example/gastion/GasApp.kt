@@ -9,7 +9,6 @@ import io.getstream.chat.android.state.plugin.config.StatePluginConfig
 import io.getstream.chat.android.state.plugin.factory.StreamStatePluginFactory
 import io.getstream.video.android.model.ApiKey
 
-@HiltAndroidApp
 class GasApp: Application() {
 
   override fun onCreate() {
