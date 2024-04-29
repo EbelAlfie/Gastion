@@ -2,8 +2,18 @@ package com.example.gastion.data
 
 import android.content.Context
 import android.location.Location
+import androidx.annotation.RequiresPermission
+import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.tasks.Task
 
 interface LocationRepository {
-  fun getCurrentLocation(appContext: Context): Task<Location>
+
+  @RequiresPermission(anyOf = ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"])
+  fun getCurrentLocation(callBack: LocationListener): Task<Location>
+
+  fun checkLocationSettings()
+
+  interface LocationListener {
+    fun onLocationResult(location: Location?)
+  }
 }

@@ -2,6 +2,7 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
+  kotlin("kapt")
   alias(libs.plugins.androidApplication)
   alias(libs.plugins.jetbrainsKotlinAndroid)
   id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
@@ -72,6 +73,15 @@ dependencies {
   implementation("com.google.android.gms:play-services-maps:18.2.0")
   implementation("com.google.maps.android:maps-compose:4.4.0")
   implementation("com.google.android.gms:play-services-location:21.0.1")
+
+  //GetStream
+  implementation ("io.getstream:stream-video-android-ui-compose:0.5.6")
+  implementation ("io.getstream:stream-android-push-firebase:1.1.7")
+  implementation ("io.getstream:stream-chat-android-compose:6.3.0")
+  implementation ("io.getstream:stream-chat-android-offline:6.3.0")
+
+  implementation("com.google.dagger:hilt-android:2.48")
+  kapt("com.google.dagger:hilt-android-compiler:2.48")
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
