@@ -1,18 +1,16 @@
 package com.example.gastion.data
 
-import android.location.Location
-import android.util.Log
 import org.osmdroid.bonuspack.location.NominatimPOIProvider
 import org.osmdroid.bonuspack.location.POI
 import org.osmdroid.util.GeoPoint
+import javax.inject.Inject
 
 
-class GasSource {
+class GasSource @Inject constructor() {
 
-  fun getNearestGasStation(myPosition: GeoPoint, maxDistance: Double) {
-    val poiProvider: NominatimPOIProvider = NominatimPOIProvider("OSMBonusPackTutoUserAgent")
-    val nearestGases: ArrayList<POI> = poiProvider.getPOICloseTo(myPosition, "fuel", 10, maxDistance)
-    Log.d("GASES", "$nearestGases")
+  fun getNearestGasStation(myPosition: GeoPoint, maxDistance: Double): ArrayList<POI> {
+    val poiProvider = NominatimPOIProvider("OSMBonusPackTutoUserAgent")
+    return poiProvider.getPOICloseTo(myPosition, "fuel", 10, maxDistance)
   }
 
 }
