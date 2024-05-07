@@ -6,7 +6,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -24,15 +23,16 @@ fun GasMap(
   val myLoc by remember(userLocation) {
     mutableStateOf(LatLng(userLocation?.latitude ?: 0.0, userLocation?.longitude ?: 0.0))
   }
-  val cameraPositionState = rememberCameraPositionState {
-    position = CameraPosition.fromLatLngZoom(myLoc, 10f)
+  val cameraPositionState = rememberCameraPositionState {}
+  cameraPositionState.position = CameraPosition.fromLatLngZoom(myLoc, 20f)
+
+  LaunchedEffect(Unit) {
+    brain.requestLocationUpdate()
   }
+
   GoogleMap(
     modifier = modifier,
     cameraPositionState = cameraPositionState,
-    onMapLoaded = {
-      brain.requestLocationUpdate()
-    }
   ) {
     Marker(
       state = MarkerState(position = myLoc),
