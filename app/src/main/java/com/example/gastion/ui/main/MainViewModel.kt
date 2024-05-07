@@ -23,7 +23,6 @@ class MainViewModel @Inject constructor(
 //  private val liveLocation: LocationActivity.LiveLocation? = null
   private val location = Location("network")
   val userLocation = MutableStateFlow<Location?>(null)
-  val poiDebugLoc = MutableStateFlow<Location?>(null)
   val nearestGasStations = MutableStateFlow<ArrayList<Location>>(arrayListOf())
 
   val gasLocations = MutableStateFlow<ArrayList<POI>>(arrayListOf())
@@ -40,7 +39,6 @@ class MainViewModel @Inject constructor(
           if (pastLocation == null || pastLocation.distanceTo(location) >= 0.1) {
             searchNearestGasStation(location)
           }
-
           userLocation.value = location
         }
       }
@@ -50,7 +48,7 @@ class MainViewModel @Inject constructor(
 
   fun searchNearestGasStation(location: Location) {
     viewModelScope.launch(Dispatchers.IO) {
-      gasLocations.value = gasSource.getNearestGasStation(GeoPoint(location.latitude, location.longitude), 0.1)
+      gasLocations.value = gasSource.getNearestGasStation(GeoPoint(location.latitude, location.longitude), 0.05)
     }
   }
 }

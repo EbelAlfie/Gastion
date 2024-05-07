@@ -10,7 +10,7 @@ class GasSource @Inject constructor() {
 
   fun getNearestGasStation(myPosition: GeoPoint, maxDistance: Double): ArrayList<POI> {
     val poiProvider = NominatimPOIProvider("OSMBonusPackTutoUserAgent")
-    return poiProvider.getPOICloseTo(myPosition, "fuel", 10, maxDistance)
+    return poiProvider.getPOICloseTo(myPosition, "fuel", 100, maxDistance)
   }
 
 }

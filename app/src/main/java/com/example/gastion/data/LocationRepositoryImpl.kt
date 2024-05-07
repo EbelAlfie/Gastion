@@ -3,6 +3,7 @@ package com.example.gastion.data
 import android.content.Context
 import android.location.Location
 import android.os.Looper
+import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.core.location.LocationCompat
 import com.example.gastion.data.LocationRepository.LocationListener
@@ -46,7 +47,11 @@ class LocationRepositoryImpl @Inject constructor(
     return fusedLocationClient.getCurrentLocation(
       locationRequest.priority,
       CancellationTokenSource().token
-    )
+    ).addOnSuccessListener {
+      Log.d("LOCCCC", "suc: ")
+    }.addOnFailureListener {
+      Log.d("LOCCCC", "fail: $it")
+    }
       .continueWith { task ->
         val location = task.result
         if (LocationCompat.isMock(location)) throw Exception("Location is Mocked") else location

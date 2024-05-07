@@ -1,6 +1,3 @@
-import java.io.FileInputStream
-import java.util.Properties
-
 plugins {
   kotlin("kapt")
   alias(libs.plugins.androidApplication)
@@ -76,12 +73,6 @@ dependencies {
   implementation("com.google.android.gms:play-services-location:21.0.1")
   implementation("com.github.MKergall:osmbonuspack:6.9.0")
   //implementation("org.osmdroid:osmdroid-android:6.1.14")
-
-  //GetStream
-  implementation ("io.getstream:stream-video-android-ui-compose:0.5.6")
-  implementation ("io.getstream:stream-android-push-firebase:1.1.7")
-  implementation ("io.getstream:stream-chat-android-compose:6.3.0")
-  implementation ("io.getstream:stream-chat-android-offline:6.3.0")
 
   implementation("com.google.dagger:hilt-android:2.48")
   kapt("com.google.dagger:hilt-android-compiler:2.48")
