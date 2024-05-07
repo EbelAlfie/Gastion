@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -43,15 +44,30 @@ fun GasMap(
     GoogleMap(
       modifier = modifier,
       cameraPositionState = cameraPositionState,
-      properties = properties
+      properties = properties,
+      onMapLoaded = {
+        cameraPositionState.position =
+          CameraPosition.fromLatLngZoom(myLoc, 20f)
+      }
     ) {
+      Marker(
+        state = MarkerState(myLoc),
+        title = "ME",
+        snippet = "MEMEMEMEMMEEEE",
+        icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
+      )
       brain.gasLocations.collectAsState().value.forEach {
         Log.d("GASS", it.mDescription)
         val latLong = LatLng(it.mLocation.latitude, it.mLocation.longitude)
         Marker(
           state = MarkerState(position = latLong),
           title = it.mDescription.substringBefore(","),
-          snippet = it.mDescription.substringAfter(",")
+          snippet = it.mDescription.substringAfter(","),
+          onClick = { marker ->
+            cameraPositionState.position =
+              CameraPosition.fromLatLngZoom(marker.position, 20f)
+            false
+          }
         )
       }
     }
