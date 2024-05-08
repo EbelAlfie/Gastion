@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
     setContent {
       GastionTheme {
         GasMap(
-          modifier = Modifier.fillMaxSize(),
+          modifier = Modifier,
           brain = viewModel
         )
       }

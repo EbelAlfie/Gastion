@@ -4,6 +4,8 @@ import android.Manifest.permission
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -89,13 +91,16 @@ fun GasMap(
           title = it.mDescription.substringBefore(","),
           snippet = it.mDescription.substringAfter(","),
           onClick = { marker ->
-            cameraPositionState.position =
-              CameraPosition.fromLatLngZoom(marker.position, 20f)
+            cameraPositionState.position = CameraPosition.fromLatLngZoom(marker.position, 20f)
             false
           }
         )
       }
     }
+    AccuracyText(
+      modifier = Modifier.fillMaxWidth(),
+      location = userLocation
+    )
   }
 
 }
