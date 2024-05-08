@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
   private val locationRepository: LocationRepository,
-  private val gasSource: GasSource
+  private val gasSource: GasSource,
 ) : ViewModel() {
 //  private val currentInfo: LocationController.SharingLocationInfo? = null
 //  private val liveLocation: LocationActivity.LiveLocation? = null
@@ -35,10 +35,8 @@ class MainViewModel @Inject constructor(
           //search nearest gas station every x meter
           if (location == null) return
 
-          val pastLocation = userLocation.value
-          if (pastLocation == null || pastLocation.distanceTo(location) >= 0.1) {
-            searchNearestGasStation(location)
-          }
+          operateLocation(location)
+
           userLocation.value = location
         }
       }
@@ -46,9 +44,21 @@ class MainViewModel @Inject constructor(
 
   }
 
+  private fun operateLocation(location: Location) {
+    val pastLocation = userLocation.value
+    if (pastLocation == null || pastLocation.distanceTo(location) >= 3.0) {
+      searchNearestGasStation(location)
+      publishLatestLocation(location)
+    }
+  }
+
   fun searchNearestGasStation(location: Location) {
     viewModelScope.launch(Dispatchers.IO) {
       gasLocations.value = gasSource.getNearestGasStation(GeoPoint(location.latitude, location.longitude), 0.05)
     }
+  }
+
+  fun publishLatestLocation(location: Location) {
+
   }
 }

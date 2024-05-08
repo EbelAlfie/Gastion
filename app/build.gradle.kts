@@ -77,6 +77,10 @@ dependencies {
   implementation("com.google.dagger:hilt-android:2.48")
   kapt("com.google.dagger:hilt-android-compiler:2.48")
 
+  // MQTT
+  implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
+  implementation("org.eclipse.paho:org.eclipse.paho.android.service:1.1.1")
+
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
   implementation(libs.androidx.activity.compose)

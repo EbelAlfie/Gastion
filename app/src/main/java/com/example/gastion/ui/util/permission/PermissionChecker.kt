@@ -14,12 +14,23 @@ fun PermissionChecker(
   val context = LocalContext.current
   permissionState.filterPermission(context)
 
+  when {
+    permissionState.isAllGranted -> {
+      permissionState.listener?.onAllGranted()
+    }
+
+    permissionState.isAnyDenied -> {
+      permissionState.listener?.onAnyDenied(
+        permissionState.permissions.first().toString()
+      )
+    }
+  }
+
   var permissionLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>? =
     rememberLauncherForActivityResult(
-      contract = ActivityResultContracts.RequestMultiplePermissions()
-    ) {
-
-    }
+      contract = ActivityResultContracts.RequestMultiplePermissions(),
+      onResult = permissionState::onPermissionResult
+    )
 
   DisposableEffect(permissionState) {
     permissionLauncher?.launch(permissionState.permissions)
