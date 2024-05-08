@@ -54,7 +54,7 @@ class MainViewModel @Inject constructor(
 
   private fun searchNearestGasStation(location: Location) {
     viewModelScope.launch(Dispatchers.IO) {
-      gasLocations.value = gasSource.getNearestGasStation(GeoPoint(location.latitude, location.longitude), 0.3)
+      gasLocations.value = gasSource.getNearestGasStation(GeoPoint(location.latitude, location.longitude), 0.03)
     }
   }
 
