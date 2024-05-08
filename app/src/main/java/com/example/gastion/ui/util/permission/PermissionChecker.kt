@@ -12,7 +12,7 @@ fun PermissionChecker(
   permissionState: PermissionState
 ) {
   val context = LocalContext.current
-  permissionState.filterPermission(context)
+  permissionState.checkPermissions(context)
 
   when {
     permissionState.isAllGranted -> {
