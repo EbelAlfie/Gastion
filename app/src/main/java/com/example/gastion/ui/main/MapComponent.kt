@@ -11,6 +11,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.example.gastion.R
+import com.example.gastion.ui.component.BottomSheetContainer
+import com.example.gastion.ui.component.BottomSheetData
+import com.example.gastion.ui.component.BottomSheetErrorContent
+import com.example.gastion.ui.component.BottomSheetState
 import com.example.gastion.ui.util.permission.PermissionChecker
 import com.example.gastion.ui.util.permission.PermissionHelper
 import com.example.gastion.ui.util.permission.PermissionState
@@ -30,6 +35,8 @@ fun GasMap(
 ) {
   val context = LocalContext.current
   val permissionState = remember { PermissionState() }
+  val bottomSheetState = remember { BottomSheetState<BottomSheetData>() }
+
   val userLocation by brain.userLocation.collectAsState()
   val myLoc by remember(userLocation) {
     mutableStateOf(LatLng(userLocation?.latitude ?: 0.0, userLocation?.longitude ?: 0.0))
@@ -38,17 +45,32 @@ fun GasMap(
     position = CameraPosition.fromLatLngZoom(myLoc, 20f)
   }
 
-  var properties by remember {
+  val properties by remember {
     mutableStateOf(MapProperties(isMyLocationEnabled = true))
+  }
+
+  PermissionChecker(permissionState)
+
+  BottomSheetContainer(sheetState = bottomSheetState) {
+    BottomSheetErrorContent(
+      sheetData = it.data ?: return@BottomSheetContainer,
+      it.onDismissRequest
+    )
   }
 
   permissionState.requestPermission(
     requiredPermissions = PermissionHelper.locationPermissions,
-  ) {
-    brain.requestLocationUpdate()
-  }
-
-  PermissionChecker(permissionState)
+    onPermissionGranted = brain::requestLocationUpdate,
+    onPermissionDenied = {
+      bottomSheetState.showBottomSheet(
+        BottomSheetData(
+          image = R.drawable.ic_gas_station,
+          title = R.string.permission_denied_title,
+          content = R.string.permission_denied_content
+        )
+      )
+    }
+  )
 
   Box {
     GoogleMap(

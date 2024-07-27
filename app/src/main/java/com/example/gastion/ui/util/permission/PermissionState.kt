@@ -2,6 +2,7 @@ package com.example.gastion.ui.util.permission
 
 import android.content.Context
 import android.content.pm.PackageManager
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,15 +15,15 @@ interface PermissionResult {
 }
 
 class PermissionState {
-  var permissions by mutableStateOf(arrayOf<Permission>())
+  var permissions = arrayOf<Permission>()
     private set
 
   var listener: PermissionResult? = null
     private set
 
-  val isAllGranted get() = permissions.isEmpty()
+  val isAllGranted by derivedStateOf { permissions.isEmpty() }
 
-  val isAnyDenied get() = permissions.isNotEmpty()
+  val isAnyDenied by derivedStateOf { permissions.isNotEmpty() }
 
   fun checkPermissions(context: Context) {
     permissions = permissions.filter {
@@ -36,7 +37,8 @@ class PermissionState {
 
   fun requestPermission(
     requiredPermissions: Array<Permission>,
-    onPermissionGranted: () -> Unit
+    onPermissionGranted: () -> Unit,
+    onPermissionDenied: (Permission) -> Unit
   ) {
     permissions = requiredPermissions
     listener = object: PermissionResult {
@@ -45,7 +47,7 @@ class PermissionState {
       }
 
       override fun onAnyDenied(permission: Permission) {
-
+        onPermissionDenied.invoke(permission)
       }
 
     }
