@@ -1,4 +1,4 @@
-package com.example.gastion.di
+package com.example.gastion.data.di
 
 import com.example.gastion.data.LocationRepository
 import com.example.gastion.data.LocationRepositoryImpl

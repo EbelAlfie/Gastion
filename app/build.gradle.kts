@@ -1,3 +1,7 @@
+import java.io.FileInputStream
+import java.io.InputStream
+import java.util.Properties
+
 plugins {
   kotlin("kapt")
   alias(libs.plugins.androidApplication)

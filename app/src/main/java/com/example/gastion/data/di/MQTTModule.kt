@@ -1,4 +1,4 @@
-package com.example.gastion.di
+package com.example.gastion.data.di
 
 import org.eclipse.paho.client.mqttv3.MqttClient
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
