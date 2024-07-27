@@ -3,10 +3,10 @@ package com.example.gastion.data
 import android.content.Context
 import android.location.Location
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.core.location.LocationCompat
 import com.example.gastion.data.LocationRepository.LocationListener
+import com.example.gastion.data.service.GasService
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 class LocationRepositoryImpl @Inject constructor(
   @ApplicationContext private val appContext: Context,
-  private val gasSource: GasSource
+  private val gasService: GasService
 ) : LocationRepository {
 
   private val locationRequest =
@@ -52,12 +52,7 @@ class LocationRepositoryImpl @Inject constructor(
     return fusedLocationClient.getCurrentLocation(
       locationRequest.priority,
       CancellationTokenSource().token
-    ).addOnSuccessListener {
-      Log.d("LOCCCC", "suc: ")
-    }.addOnFailureListener {
-      Log.d("LOCCCC", "fail: $it")
-    }
-      .continueWith { task ->
+    ).continueWith { task ->
         val location = task.result
         if (LocationCompat.isMock(location)) throw Exception("Location is Mocked") else location
       }
@@ -84,7 +79,7 @@ class LocationRepositoryImpl @Inject constructor(
 
   override fun getNearestGasStation(nearestFrom: Location, maxDistance: Double): ArrayList<POI> {
     val geoPoint = GeoPoint(nearestFrom.latitude, nearestFrom.longitude)
-    return gasSource.getNearestGasStation(geoPoint, maxDistance)
+    return gasService.getNearestGasStation(geoPoint, maxDistance)
   }
 
   companion object {
