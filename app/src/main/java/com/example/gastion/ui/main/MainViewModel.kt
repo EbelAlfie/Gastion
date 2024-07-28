@@ -4,6 +4,7 @@ import android.location.Location
 import androidx.annotation.RequiresPermission
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.gastion.data.GasRepository
 import com.example.gastion.data.LocationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-  private val locationRepository: LocationRepository
+  private val locationRepository: LocationRepository,
+  private val gasRepository: GasRepository
 ) : ViewModel() {
   //  private val currentInfo: LocationController.SharingLocationInfo? = null
 //  private val liveLocation: LocationActivity.LiveLocation? = null
@@ -52,7 +54,7 @@ class MainViewModel @Inject constructor(
   private fun searchNearestGasStation(location: Location) {
     viewModelScope.launch(Dispatchers.IO) {
       gasLocations.value =
-        locationRepository.getNearestGasStation(location, 0.03)
+        gasRepository.getNearestGasStation(location, 0.03)
     }
   }
 

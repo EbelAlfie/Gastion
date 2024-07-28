@@ -3,7 +3,6 @@ package com.example.gastion.data
 import android.location.Location
 import androidx.annotation.RequiresPermission
 import com.google.android.gms.tasks.Task
-import org.osmdroid.bonuspack.location.POI
 
 interface LocationRepository {
 
@@ -15,6 +14,4 @@ interface LocationRepository {
   interface LocationListener {
     fun onLocationResult(location: Location?)
   }
-
-  fun getNearestGasStation(nearestFrom: Location, maxDistance: Double): ArrayList<POI>
 }

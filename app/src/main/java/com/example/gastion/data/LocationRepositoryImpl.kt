@@ -6,7 +6,6 @@ import android.os.Looper
 import androidx.annotation.RequiresPermission
 import androidx.core.location.LocationCompat
 import com.example.gastion.data.LocationRepository.LocationListener
-import com.example.gastion.data.service.GasService
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -18,13 +17,10 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 import dagger.hilt.android.qualifiers.ApplicationContext
-import org.osmdroid.bonuspack.location.POI
-import org.osmdroid.util.GeoPoint
 import javax.inject.Inject
 
 class LocationRepositoryImpl @Inject constructor(
-  @ApplicationContext private val appContext: Context,
-  private val gasService: GasService
+  @ApplicationContext private val appContext: Context
 ) : LocationRepository {
 
   private val locationRequest =
@@ -75,11 +71,6 @@ class LocationRepositoryImpl @Inject constructor(
           //callback.onOtherErrorResponse(it)
         }
       }
-  }
-
-  override fun getNearestGasStation(nearestFrom: Location, maxDistance: Double): ArrayList<POI> {
-    val geoPoint = GeoPoint(nearestFrom.latitude, nearestFrom.longitude)
-    return gasService.getNearestGasStation(geoPoint, maxDistance)
   }
 
   companion object {
