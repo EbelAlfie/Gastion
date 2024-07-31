@@ -2,4 +2,9 @@
   <string name="app_name">Gastion</string>
 
   <string name="location.accuracy_label">Akurat hingga %.4f meter</string>
+
+  <string name="permission.denied.title">Permission Denied</string>
+  <string name="permission.denied.content">Permission needed to use this function</string>
+  <string name="label.positive">Oke</string>
+  <string name="label.close">Tutup</string>
 </resources>

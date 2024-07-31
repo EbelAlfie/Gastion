@@ -2,7 +2,6 @@ package com.example.gastion.data
 
 import android.location.Location
 import androidx.annotation.RequiresPermission
-import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.tasks.Task
 
 interface LocationRepository {

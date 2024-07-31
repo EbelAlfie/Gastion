@@ -4,22 +4,21 @@ import android.location.Location
 import androidx.annotation.RequiresPermission
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.gastion.data.GasSource
+import com.example.gastion.data.GasRepository
 import com.example.gastion.data.LocationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.osmdroid.bonuspack.location.POI
-import org.osmdroid.util.GeoPoint
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
   private val locationRepository: LocationRepository,
-  private val gasSource: GasSource,
+  private val gasRepository: GasRepository
 ) : ViewModel() {
-//  private val currentInfo: LocationController.SharingLocationInfo? = null
+  //  private val currentInfo: LocationController.SharingLocationInfo? = null
 //  private val liveLocation: LocationActivity.LiveLocation? = null
   private val location = Location("network")
   val userLocation = MutableStateFlow<Location?>(null)
@@ -54,7 +53,8 @@ class MainViewModel @Inject constructor(
 
   private fun searchNearestGasStation(location: Location) {
     viewModelScope.launch(Dispatchers.IO) {
-      gasLocations.value = gasSource.getNearestGasStation(GeoPoint(location.latitude, location.longitude), 0.03)
+      gasLocations.value =
+        gasRepository.getNearestGasStation(location, 0.03)
     }
   }
 

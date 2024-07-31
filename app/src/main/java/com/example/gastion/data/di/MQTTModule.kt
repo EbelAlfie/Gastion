@@ -1,4 +1,4 @@
-package com.example.gastion.di
+package com.example.gastion.data.di
 
 import android.content.Context
 import android.util.Log
