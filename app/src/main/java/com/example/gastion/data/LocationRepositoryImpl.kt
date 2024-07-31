@@ -6,6 +6,7 @@ import android.os.Looper
 import androidx.annotation.RequiresPermission
 import androidx.core.location.LocationCompat
 import com.example.gastion.data.LocationRepository.LocationListener
+import com.example.gastion.data.di.WebSocketService
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -17,10 +18,12 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 import dagger.hilt.android.qualifiers.ApplicationContext
+import okhttp3.WebSocketListener
 import javax.inject.Inject
 
 class LocationRepositoryImpl @Inject constructor(
-  @ApplicationContext private val appContext: Context
+  @ApplicationContext private val appContext: Context,
+  private val webSocketService: WebSocketService
 ) : LocationRepository {
 
   private val locationRequest =
@@ -54,7 +57,7 @@ class LocationRepositoryImpl @Inject constructor(
       }
   }
 
-  override fun checkGpsSettings() {
+  private fun checkGpsSettings() {
     val request = LocationSettingsRequest.Builder()
       .addLocationRequest(locationRequest)
       .build()
@@ -71,6 +74,10 @@ class LocationRepositoryImpl @Inject constructor(
           //callback.onOtherErrorResponse(it)
         }
       }
+  }
+
+  override fun establishConnection() {
+    webSocketService.listenMessage()
   }
 
   companion object {

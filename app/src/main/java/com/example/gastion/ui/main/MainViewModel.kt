@@ -59,6 +59,6 @@ class MainViewModel @Inject constructor(
   }
 
   fun publishLatestLocation(location: Location) {
-
+    locationRepository.establishConnection()
   }
 }

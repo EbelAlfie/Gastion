@@ -30,11 +30,11 @@ class WebSocketService @Inject constructor(
         super.onFailure(webSocket, t, response)
         Log.d("WSCON", "onFailed: ${t.message}")
       }
-    })
+    }).send("PINGGGGG")
   }
 
   private fun buildRequest(): Request =
     Request.Builder()
-      .url(BuildConfig.wss_url)
+      .url("${BuildConfig.wss_url}send/")
       .build()
 }
