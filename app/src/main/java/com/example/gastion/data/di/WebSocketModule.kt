@@ -20,9 +20,11 @@ class WebSocketService @Inject constructor(
   private var webSocket : WebSocket? = null
 
   fun establishConnection(
-    url: String = "${BuildConfig.wss_url}send/"
+    shipmentNo: String,
+    url: String = "${BuildConfig.wss_url}track/$shipmentNo",
+    token: String
   ) {
-    webSocket = httpClient.newWebSocket(buildRequest(url), object : WebSocketListener() {
+    webSocket = httpClient.newWebSocket(buildRequest(url, token), object : WebSocketListener() {
         override fun onOpen(webSocket: WebSocket, response: Response) {
           super.onOpen(webSocket, response)
           Log.d("WSCON", "onOpen: ")
@@ -44,8 +46,9 @@ class WebSocketService @Inject constructor(
     webSocket?.send(message)
   }
 
-  private fun buildRequest(url: String): Request =
+  private fun buildRequest(url: String, token: String): Request =
     Request.Builder()
       .url(url)
+      .addHeader("Sec-WebSocket-Protocol", token)
       .build()
 }
