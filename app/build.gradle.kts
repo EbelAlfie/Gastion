@@ -25,6 +25,7 @@ android {
     vectorDrawables {
       useSupportLibrary = true
     }
+    buildConfigField("Boolean", "IS_WS", "true")
   }
 
   secrets {
@@ -49,6 +50,17 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
+
+  productFlavors {
+    create("customer") {
+      applicationIdSuffix = ".customer"
+    }
+
+    create("driver") {
+      applicationIdSuffix = ".driver"
+    }
+  }
+
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8

@@ -22,7 +22,6 @@ import javax.inject.Inject
 
 class LocationRepositoryImpl @Inject constructor(
   @ApplicationContext private val appContext: Context,
-  private val webSocketService: WebSocketService
 ) : LocationRepository {
 
   private val locationRequest =
@@ -73,10 +72,6 @@ class LocationRepositoryImpl @Inject constructor(
           //callback.onOtherErrorResponse(it)
         }
       }
-  }
-
-  override fun establishConnection() {
-    webSocketService.establishConnection()
   }
 
   companion object {
