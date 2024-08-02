@@ -6,17 +6,24 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gastion.data.GasRepository
 import com.example.gastion.data.LocationRepository
+import com.example.gastion.data.MemberRepository
+import com.example.gastion.data.model.UserRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.osmdroid.bonuspack.location.POI
 import javax.inject.Inject
 
+/**
+ * This will be the only viewModel for all screen
+ */
 @HiltViewModel
 class MainViewModel @Inject constructor(
   private val locationRepository: LocationRepository,
-  private val gasRepository: GasRepository
+  private val gasRepository: GasRepository,
+  private val memberRepository: MemberRepository
 ) : ViewModel() {
   //  private val currentInfo: LocationController.SharingLocationInfo? = null
 //  private val liveLocation: LocationActivity.LiveLocation? = null
@@ -58,7 +65,22 @@ class MainViewModel @Inject constructor(
     }
   }
 
-  fun publishLatestLocation(location: Location) {
-    locationRepository.establishConnection()
+//  fun publishLatestLocation(location: Location) {
+//    locationRepository.establishConnection()
+//  }
+
+  suspend fun login(
+    userName: String,
+    password: String
+  ) {
+    val request = UserRequest(
+      userName = userName,
+      password = password
+    )
+    viewModelScope.launch {
+      memberRepository.login(request).collectLatest {
+
+      }
+    }
   }
 }

@@ -52,6 +52,7 @@ android {
   }
 
   productFlavors {
+    setFlavorDimensions(listOf("application"))
     create("customer") {
       applicationIdSuffix = ".customer"
     }

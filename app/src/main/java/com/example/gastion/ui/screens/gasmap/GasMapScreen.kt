@@ -1,4 +1,4 @@
-package com.example.gastion.ui.main
+package com.example.gastion.ui.screens.gasmap
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -16,6 +16,7 @@ import com.example.gastion.ui.component.BottomSheetContainer
 import com.example.gastion.ui.component.BottomSheetData
 import com.example.gastion.ui.component.BottomSheetErrorContent
 import com.example.gastion.ui.component.BottomSheetState
+import com.example.gastion.ui.main.MainViewModel
 import com.example.gastion.ui.util.permission.Permission
 import com.example.gastion.ui.util.permission.PermissionChecker
 import com.example.gastion.ui.util.permission.PermissionHelper
@@ -31,7 +32,7 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
-fun GasMap(
+fun GasMapScreen(
   modifier: Modifier = Modifier,
   brain: MainViewModel
 ) {

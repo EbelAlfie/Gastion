@@ -1,10 +1,7 @@
-package com.example.gastion.data.di
+package com.example.gastion.data.service
 
 import android.util.Log
 import com.example.gastion.BuildConfig
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response

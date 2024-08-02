@@ -6,7 +6,6 @@ import android.os.Looper
 import androidx.annotation.RequiresPermission
 import androidx.core.location.LocationCompat
 import com.example.gastion.data.LocationRepository.LocationListener
-import com.example.gastion.data.di.WebSocketService
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback

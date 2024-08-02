@@ -1,7 +1,8 @@
-package com.example.gastion.data.di
+package com.example.gastion.data.service
 
 import android.content.Context
 import android.util.Log
+import com.example.gastion.BuildConfig
 import com.example.gastion.data.model.LocationMessageModel
 import com.google.gson.Gson
 import org.eclipse.paho.android.service.MqttAndroidClient
@@ -13,11 +14,16 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions
 import org.eclipse.paho.client.mqttv3.MqttException
 import org.eclipse.paho.client.mqttv3.MqttMessage
 import javax.inject.Inject
+import javax.inject.Named
 
-class MQTTModule @Inject constructor(
+/**
+ * Mqtt service provider
+ */
+@Named("false")
+class MQTTService @Inject constructor(
   context: Context,
   private var clientId: String
-) {
+): LiveTrackService {
   var isConnected: Boolean = false
 
   private var mqttClient: MqttAndroidClient? = null
@@ -48,7 +54,7 @@ class MQTTModule @Inject constructor(
       mqttClient?.connect(options, null, object : IMqttActionListener {
         override fun onSuccess(asyncActionToken: IMqttToken?) {
           Log.i("Info", "Connection success")
-          subscribeToTopic()
+          subscribe()
           isConnected = true
           callback(true)
         }
@@ -63,22 +69,7 @@ class MQTTModule @Inject constructor(
     }
   }
 
-  fun sendMessage(
-    deviceName: String,
-    topic: String,
-    message: String,
-    lat: String,
-    lon: String
-  ) {
-    val gson = Gson()
-    val message = gson.toJson(LocationMessageModel(deviceName, topic, message, lat, lon))
-    val qos = 1
-    val retained = false
-    Log.i("Info", "message sent ${message}")
-    mqttClient?.publish(topic, message.toByteArray(), qos, retained)
-  }
-
-  private fun subscribeToTopic() {
+  override fun subscribe() {
     try {
       //must be same size topics and qos
       val topics = arrayOf("myTopic", this.clientId)
@@ -98,4 +89,29 @@ class MQTTModule @Inject constructor(
       ex.printStackTrace()
     }
   }
+
+  override fun publish(locationMessageModel: LocationMessageModel) {
+    val gson = Gson()
+    val message = gson.toJson(locationMessageModel, LocationMessageModel::class.java)
+    val qos = 1
+    val retained = false
+    Log.i("Info", "message sent ${message}")
+    mqttClient?.publish("topic", message.toByteArray(), qos, retained)
+  }
+
+  fun publish(
+    deviceName: String,
+    topic: String,
+    message: String,
+    lat: String,
+    lon: String
+  ) {
+    val gson = Gson()
+    val message = gson.toJson(LocationMessageModel(deviceName, topic, message, lat, lon))
+    val qos = 1
+    val retained = false
+    Log.i("Info", "message sent ${message}")
+    mqttClient?.publish(topic, message.toByteArray(), qos, retained)
+  }
+
 }

@@ -1,4 +1,4 @@
-package com.example.gastion.ui.main
+package com.example.gastion.ui.screens.gasmap
 
 import android.location.Location
 import androidx.compose.foundation.Image
