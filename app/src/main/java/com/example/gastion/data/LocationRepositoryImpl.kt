@@ -18,7 +18,6 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 import dagger.hilt.android.qualifiers.ApplicationContext
-import okhttp3.WebSocketListener
 import javax.inject.Inject
 
 class LocationRepositoryImpl @Inject constructor(
@@ -77,7 +76,7 @@ class LocationRepositoryImpl @Inject constructor(
   }
 
   override fun establishConnection() {
-    webSocketService.listenMessage()
+    webSocketService.establishConnection()
   }
 
   companion object {

@@ -2,6 +2,9 @@ package com.example.gastion.data.di
 
 import android.util.Log
 import com.example.gastion.BuildConfig
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -14,27 +17,35 @@ class WebSocketService @Inject constructor(
   private val httpClient: OkHttpClient
 ) {
 
-  fun listenMessage() {
-    httpClient.newWebSocket(buildRequest(), object : WebSocketListener() {
-      override fun onOpen(webSocket: WebSocket, response: Response) {
-        super.onOpen(webSocket, response)
-        Log.d("WSCON", "onOpen: ")
-      }
+  private var webSocket : WebSocket? = null
 
-      override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
-        super.onMessage(webSocket, bytes)
-        Log.d("WSCON", "onMessage: ${bytes}")
-      }
+  fun establishConnection(
+    url: String = "${BuildConfig.wss_url}send/"
+  ) {
+    webSocket = httpClient.newWebSocket(buildRequest(url), object : WebSocketListener() {
+        override fun onOpen(webSocket: WebSocket, response: Response) {
+          super.onOpen(webSocket, response)
+          Log.d("WSCON", "onOpen: ")
+        }
 
-      override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-        super.onFailure(webSocket, t, response)
-        Log.d("WSCON", "onFailed: ${t.message}")
-      }
-    })
+        override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
+          super.onMessage(webSocket, bytes)
+          Log.d("WSCON", "onMessage: ${bytes}")
+        }
+
+        override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+          super.onFailure(webSocket, t, response)
+          Log.d("WSCON", "onFailed: ${t.message}")
+        }
+      })
   }
 
-  private fun buildRequest(): Request =
+  fun publishMesssage(message: String) {
+    webSocket?.send(message)
+  }
+
+  private fun buildRequest(url: String): Request =
     Request.Builder()
-      .url("${BuildConfig.wss_url}send/")
+      .url(url)
       .build()
 }
