@@ -15,25 +15,30 @@ interface PermissionResult {
 }
 
 class PermissionState {
-  var permissions: Array<Permission> = arrayOf()
+  var permissions = arrayOf<Permission>()
     private set
 
   var listener: PermissionResult? = null
-  private set
+    private set
 
   val isAllGranted by derivedStateOf { permissions.isEmpty() }
 
   val isAnyDenied by derivedStateOf { permissions.isNotEmpty() }
 
-  fun filterPermission(context: Context) {
+  fun checkPermissions(context: Context) {
     permissions = permissions.filter {
       context.checkSelfPermission(it) == PackageManager.PERMISSION_DENIED
     }.toTypedArray()
   }
 
+  fun onPermissionResult(result: Map<String, Boolean>) {
+    permissions = result.filter { !it.value }.map {it.key}.toTypedArray()
+  }
+
   fun requestPermission(
     requiredPermissions: Array<Permission>,
-    onPermissionGranted: () -> Unit
+    onPermissionGranted: () -> Unit,
+    onPermissionDenied: (Permission) -> Unit
   ) {
     permissions = requiredPermissions
     listener = object: PermissionResult {
@@ -42,14 +47,9 @@ class PermissionState {
       }
 
       override fun onAnyDenied(permission: Permission) {
-
+        onPermissionDenied.invoke(permission)
       }
 
     }
   }
-
-  fun onPermissionResult(result: Map<String, Boolean>) {
-    permissions = result.filter { !it.value }.map {it.key}.toTypedArray()
-  }
-
 }

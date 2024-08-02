@@ -1,3 +1,7 @@
+import java.io.FileInputStream
+import java.io.InputStream
+import java.util.Properties
+
 plugins {
   kotlin("kapt")
   alias(libs.plugins.androidApplication)
@@ -76,6 +80,12 @@ dependencies {
 
   implementation("com.google.dagger:hilt-android:2.48")
   kapt("com.google.dagger:hilt-android-compiler:2.48")
+
+  // Http Networking
+  implementation("com.squareup.retrofit2:retrofit:2.9.0")
+  implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+  implementation("com.squareup.okhttp3:okhttp:4.12.0")
+  implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
   // MQTT
   implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")

@@ -3,10 +3,10 @@ package com.example.gastion.data
 import android.content.Context
 import android.location.Location
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.core.location.LocationCompat
 import com.example.gastion.data.LocationRepository.LocationListener
+import com.example.gastion.data.di.WebSocketService
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -18,10 +18,12 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 import dagger.hilt.android.qualifiers.ApplicationContext
+import okhttp3.WebSocketListener
 import javax.inject.Inject
 
 class LocationRepositoryImpl @Inject constructor(
-  @ApplicationContext private val appContext: Context
+  @ApplicationContext private val appContext: Context,
+  private val webSocketService: WebSocketService
 ) : LocationRepository {
 
   private val locationRequest =
@@ -49,18 +51,13 @@ class LocationRepositoryImpl @Inject constructor(
     return fusedLocationClient.getCurrentLocation(
       locationRequest.priority,
       CancellationTokenSource().token
-    ).addOnSuccessListener {
-      Log.d("LOCCCC", "suc: ")
-    }.addOnFailureListener {
-      Log.d("LOCCCC", "fail: $it")
-    }
-      .continueWith { task ->
+    ).continueWith { task ->
         val location = task.result
         if (LocationCompat.isMock(location)) throw Exception("Location is Mocked") else location
       }
   }
 
-  override fun checkGpsSettings() {
+  private fun checkGpsSettings() {
     val request = LocationSettingsRequest.Builder()
       .addLocationRequest(locationRequest)
       .build()
@@ -77,6 +74,10 @@ class LocationRepositoryImpl @Inject constructor(
           //callback.onOtherErrorResponse(it)
         }
       }
+  }
+
+  override fun establishConnection() {
+    webSocketService.listenMessage()
   }
 
   companion object {
