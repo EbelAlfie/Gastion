@@ -39,7 +39,7 @@ fun GasMap(
 
   val userLocation by brain.userLocation.collectAsState()
   val myLoc by remember(userLocation) {
-    mutableStateOf(LatLng(userLocation?.latitude ?: 0.0, userLocation?.longitude ?: 0.0))
+    mutableStateOf(LatLng(userLocation?.latitude ?: -6.197302, userLocation?.longitude ?: 106.819142))
   }
   val cameraPositionState = rememberCameraPositionState {
     position = CameraPosition.fromLatLngZoom(myLoc, 20f)
