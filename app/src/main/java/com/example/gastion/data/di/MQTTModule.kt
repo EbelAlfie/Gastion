@@ -2,18 +2,16 @@ package com.example.gastion.data.di
 
 import android.content.Context
 import android.util.Log
-import com.example.gastion.data.model.LocationMqttModel
+import com.example.gastion.data.model.LocationMessageModel
 import com.google.gson.Gson
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
 import org.eclipse.paho.client.mqttv3.IMqttToken
 import org.eclipse.paho.client.mqttv3.MqttCallback
-import org.eclipse.paho.client.mqttv3.MqttClient
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
 import org.eclipse.paho.client.mqttv3.MqttException
 import org.eclipse.paho.client.mqttv3.MqttMessage
-import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence
 import javax.inject.Inject
 
 class MQTTModule @Inject constructor(
@@ -73,7 +71,7 @@ class MQTTModule @Inject constructor(
     lon: String
   ) {
     val gson = Gson()
-    val message = gson.toJson(LocationMqttModel(deviceName, topic, message, lat, lon))
+    val message = gson.toJson(LocationMessageModel(deviceName, topic, message, lat, lon))
     val qos = 1
     val retained = false
     Log.i("Info", "message sent ${message}")

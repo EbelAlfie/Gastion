@@ -6,37 +6,34 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalContext
+import okhttp3.internal.notify
 
 @Composable
 fun PermissionChecker(
   permissionState: PermissionState
 ) {
-  val context = LocalContext.current
-  permissionState.checkPermissions(context)
+  with (permissionState) {
+    if (permissions.isEmpty()) permissionListener?.onAllGranted()
 
-  when {
-    permissionState.isAllGranted -> {
-      permissionState.listener?.onAllGranted()
-    }
-
-    permissionState.isAnyDenied -> {
-      permissionState.listener?.onAnyDenied(
-        permissionState.permissions.first().toString()
+    var permissionLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>? =
+      rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions(),
+        onResult = { result ->
+          val deniedPermissions = result.filter { !it.value }.map { it.key }
+          if (deniedPermissions.isEmpty())
+            permissionListener?.onAllGranted()
+          else
+            permissionListener?.onAnyDenied(deniedPermissions.firstOrNull() ?: "")
+        }
       )
-    }
-  }
 
-  var permissionLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>? =
-    rememberLauncherForActivityResult(
-      contract = ActivityResultContracts.RequestMultiplePermissions(),
-      onResult = permissionState::onPermissionResult
-    )
-
-  DisposableEffect(permissionState) {
-    permissionLauncher?.launch(permissionState.permissions)
-    onDispose {
-      permissionLauncher = null
+    DisposableEffect(permissions) {
+      permissionLauncher?.launch(permissions.toTypedArray())
+      onDispose {
+        permissionLauncher = null
+      }
     }
+
   }
 
 }

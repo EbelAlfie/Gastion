@@ -1,5 +1,6 @@
 package com.example.gastion.ui.main
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,14 +11,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import com.example.gastion.R
 import com.example.gastion.ui.component.BottomSheetContainer
 import com.example.gastion.ui.component.BottomSheetData
 import com.example.gastion.ui.component.BottomSheetErrorContent
 import com.example.gastion.ui.component.BottomSheetState
+import com.example.gastion.ui.util.permission.Permission
 import com.example.gastion.ui.util.permission.PermissionChecker
 import com.example.gastion.ui.util.permission.PermissionHelper
+import com.example.gastion.ui.util.permission.PermissionResult
 import com.example.gastion.ui.util.permission.PermissionState
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -33,8 +35,7 @@ fun GasMap(
   modifier: Modifier = Modifier,
   brain: MainViewModel
 ) {
-  val context = LocalContext.current
-  val permissionState = remember { PermissionState() }
+  var permissionState by remember { mutableStateOf(PermissionState()) }
   val bottomSheetState = remember { BottomSheetState<BottomSheetData>() }
 
   val userLocation by brain.userLocation.collectAsState()
@@ -49,7 +50,9 @@ fun GasMap(
     mutableStateOf(MapProperties(isMyLocationEnabled = true))
   }
 
-  PermissionChecker(permissionState)
+  PermissionChecker(
+    permissionState = permissionState,
+  )
 
   BottomSheetContainer(sheetState = bottomSheetState) {
     BottomSheetErrorContent(
@@ -58,17 +61,24 @@ fun GasMap(
     )
   }
 
-  permissionState.requestPermission(
-    requiredPermissions = PermissionHelper.locationPermissions,
-    onPermissionGranted = brain::requestLocationUpdate,
-    onPermissionDenied = {
-      bottomSheetState.showBottomSheet(
-        BottomSheetData(
-          image = R.drawable.ic_gas_station,
-          title = R.string.permission_denied_title,
-          content = R.string.permission_denied_content
+  permissionState = PermissionState(
+    permissions = PermissionHelper.locationPermissions,
+    permissionListener = object: PermissionResult {
+      @SuppressLint("MissingPermission")
+      override fun onAllGranted() {
+        brain.requestLocationUpdate()
+      }
+
+      override fun onAnyDenied(permission: Permission) {
+        bottomSheetState.showBottomSheet(
+          BottomSheetData(
+            image = R.drawable.ic_gas_station,
+            title = R.string.permission_denied_title,
+            content = R.string.permission_denied_content
+          )
         )
-      )
+      }
+
     }
   )
 
