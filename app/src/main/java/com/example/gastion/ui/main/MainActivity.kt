@@ -22,10 +22,7 @@ class MainActivity : BaseActivity<>() {
   @Composable
   override fun MainScreen() {
     GastionTheme {
-      GasMapScreen(
-        modifier = Modifier,
-        brain = viewModel
-      )
+      
     }
   }
 }
