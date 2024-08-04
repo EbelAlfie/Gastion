@@ -1,8 +1,6 @@
 package com.example.gastion.ui.screens.login
 
-import com.example.gastion.ui.core.BaseScreenModel
-
-data class Login(
+data class LoginUiState(
   val name: String,
   val password: String,
-): BaseScreenModel
+)

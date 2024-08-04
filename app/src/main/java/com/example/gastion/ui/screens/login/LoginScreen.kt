@@ -23,7 +23,7 @@ import com.example.gastion.ui.theme.components.TextInput
  */
 @Composable
 fun LoginScreen(
-  screenData: Login,
+  uiState: LoginUiState,
   onNameChange: (String) -> Unit,
   onPassChange: (String) -> Unit,
   onLogin: () -> Unit
@@ -40,13 +40,13 @@ fun LoginScreen(
       )
 
       TextInput(
-        value = screenData.name,
+        value = uiState.name,
         hint = stringResource(id = R.string.usn_hint),
         onValueChange = onNameChange
       )
 
       TextInput(
-        value = screenData.password,
+        value = uiState.password,
         hint = stringResource(id = R.string.password_hint),
         onValueChange = onPassChange
       )

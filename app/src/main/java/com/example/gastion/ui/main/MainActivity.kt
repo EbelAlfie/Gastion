@@ -9,20 +9,19 @@ import androidx.compose.ui.Modifier
 import com.example.gastion.ui.core.BaseActivity
 import com.example.gastion.ui.core.BaseUiDelegate
 import com.example.gastion.ui.screens.gasmap.GasMapScreen
+import com.example.gastion.ui.screens.login.LoginScreen
 import com.example.gastion.ui.theme.GastionTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<>() {
 
-  override val uiDelegate: BaseUiDelegate<>
-
   private val viewModel: MainViewModel by viewModels()
 
   @Composable
   override fun MainScreen() {
     GastionTheme {
-      
+      LoginScreen()
     }
   }
 }

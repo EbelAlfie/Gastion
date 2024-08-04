@@ -7,9 +7,7 @@ import androidx.compose.runtime.Composable
 import com.example.gastion.ui.theme.components.AlertBottomSheet
 import com.example.gastion.ui.theme.components.Loading
 
-abstract class BaseActivity: ComponentActivity() {
-
-  abstract val uiDelegate: BaseUiDelegate
+abstract class BaseActivity<screens: BaseScreenModel>: ComponentActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
