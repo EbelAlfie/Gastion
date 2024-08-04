@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.gastion.ui.core.BaseActivity
 import com.example.gastion.ui.core.BaseUiDelegate
@@ -18,15 +19,13 @@ class MainActivity : BaseActivity<>() {
 
   private val viewModel: MainViewModel by viewModels()
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContent {
-      GastionTheme {
-        GasMapScreen(
-          modifier = Modifier,
-          brain = viewModel
-        )
-      }
+  @Composable
+  override fun MainScreen() {
+    GastionTheme {
+      GasMapScreen(
+        modifier = Modifier,
+        brain = viewModel
+      )
     }
   }
 }
