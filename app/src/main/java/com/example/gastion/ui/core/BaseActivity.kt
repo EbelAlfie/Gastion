@@ -13,10 +13,10 @@ import androidx.lifecycle.Lifecycle
 import com.example.gastion.ui.theme.components.AlertBottomSheet
 import com.example.gastion.ui.theme.components.Loading
 
-abstract class BaseActivity<screens : BaseScreenModel, events : BaseUiEvents> :
+abstract class BaseActivity<screens : BaseUiState> :
   ComponentActivity() {
 
-  protected abstract val viewModel: BaseViewModel<screens, events>
+  protected abstract val viewModel: BaseViewModel<screens>
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -62,7 +62,7 @@ abstract class BaseActivity<screens : BaseScreenModel, events : BaseUiEvents> :
   @Composable
   open fun AlertSheet() {
     val data by viewModel.messageState.collectAsState()
-    AlertBottomSheet(data.sheetData, viewModel::dismissSheet)
+    AlertBottomSheet(data.sheetData, viewModel::dismissBottomSheet)
   }
 
   @Composable
