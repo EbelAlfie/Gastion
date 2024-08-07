@@ -4,6 +4,8 @@ import com.example.gastion.data.GasRepository
 import com.example.gastion.data.GasRepositoryImpl
 import com.example.gastion.data.LocationRepository
 import com.example.gastion.data.LocationRepositoryImpl
+import com.example.gastion.data.MemberRepository
+import com.example.gastion.data.MemberRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,4 +20,7 @@ interface RepositoryProvider {
 
   @Binds
   fun provideGasRepo(gasRepository: GasRepositoryImpl): GasRepository
+
+  @Binds
+  fun provideMemberRepo(memberRepository: MemberRepositoryImpl): MemberRepository
 }

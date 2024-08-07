@@ -1,6 +1,11 @@
 <resources>
   <string name="app_name">Gastion</string>
 
+  <string name="login_title">Login</string>
+  <string name="usn_hint">Username</string>
+  <string name="password_hint">Password</string>
+  <string name="submit_label">Submit</string>
+
   <string name="location.accuracy_label">Akurat hingga %.4f meter</string>
 
   <string name="permission.denied.title">Permission Denied</string>

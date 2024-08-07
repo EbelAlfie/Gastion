@@ -6,7 +6,7 @@ import android.Manifest
 object PermissionHelper {
 
   val locationPermissions
-    get() = arrayOf(
+    get() = listOf(
       Manifest.permission.ACCESS_COARSE_LOCATION,
       Manifest.permission.ACCESS_FINE_LOCATION
     )

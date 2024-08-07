@@ -1,36 +1,45 @@
 package com.example.gastion.ui.main
 
-import android.content.Intent
-import android.os.Bundle
-import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import com.example.gastion.ui.core.BaseActivity
+import com.example.gastion.ui.core.Screen
+import com.example.gastion.ui.main.MainScreens.Login
+import com.example.gastion.ui.main.MainScreens.Maps
+import com.example.gastion.ui.screens.gasmap.GasMapScreen
+import com.example.gastion.ui.screens.login.LoginScreen
 import com.example.gastion.ui.theme.GastionTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : BaseActivity<MainScreens>() {
 
-  private val viewModel: MainViewModel by viewModels()
+  override val viewModel: MainViewModel by viewModels()
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContent {
-      GastionTheme {
-        GasMap(
-          modifier = Modifier,
-          brain = viewModel
+  @Composable
+  override fun MainScreen() {
+    GastionTheme {
+      val screen by viewModel.uiState.collectAsState()
+
+      Screen<Login>(screen) {
+        LoginScreen(
+          uiState = it,
+          onLogin = viewModel::login,
+          onNameChange = viewModel::onNameChanged,
+          onPassChange = viewModel::onPassChanged,
+        )
+      }
+
+      Screen<Maps>(screen) {
+        GasMapScreen(
+          uiState = it,
+          requestLocationUpdate = viewModel::requestLocationUpdate
         )
       }
     }
   }
+
+  override fun eventHandler(events: Any) {}
 }

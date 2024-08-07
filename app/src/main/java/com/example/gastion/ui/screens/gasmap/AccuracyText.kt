@@ -1,4 +1,4 @@
-package com.example.gastion.ui.main
+package com.example.gastion.ui.screens.gasmap
 
 import android.location.Location
 import androidx.compose.foundation.Image
@@ -23,10 +23,10 @@ fun AccuracyText(
   Box {
     Row (
       modifier = modifier.padding(NormalPadding)
-    ){
+    ) {
       Image(
         modifier = Modifier.padding(IconPadding),
-        painter = painterResource(id = drawable.ic_locatoin_accuracy),
+        painter = painterResource(id = drawable.ic_location_accuracy),
         contentDescription = null
       )
       Text(

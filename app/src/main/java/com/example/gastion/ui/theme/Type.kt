@@ -1,6 +1,7 @@
 package com.example.gastion.ui.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -32,3 +33,36 @@ val Typography = Typography(
     )
     */
 )
+
+internal object TypographyToken {
+  val FontSmallBold: TextStyle = TextStyle(
+    color = Color.Black,
+    fontSize = TextSize.sizeSmall,
+    fontWeight = FontWeight.Bold
+  )
+  val FontSmallNormal: TextStyle = TextStyle(
+    color = Color.Black,
+    fontSize = TextSize.sizeSmall,
+    fontWeight = FontWeight.Normal
+  )
+  val FontMediumBold: TextStyle = TextStyle(
+    color = Color.Black,
+    fontSize = TextSize.sizeMedium,
+    fontWeight = FontWeight.Bold
+  )
+  val FontMediumNormal: TextStyle = TextStyle(
+    color = Color.Black,
+    fontSize = TextSize.sizeMedium,
+    fontWeight = FontWeight.Normal
+  )
+  val FontBigBold: TextStyle = TextStyle(
+    color = Color.Black,
+    fontSize = TextSize.sizeBig,
+    fontWeight = FontWeight.Bold
+  )
+  val FontBigNormal: TextStyle = TextStyle(
+    color = Color.Black,
+    fontSize = TextSize.sizeBig,
+    fontWeight = FontWeight.Normal
+  )
+}
