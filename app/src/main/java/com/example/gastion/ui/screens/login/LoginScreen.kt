@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.gastion.R
+import com.example.gastion.ui.main.MainScreens
 import com.example.gastion.ui.theme.TypographyToken
 import com.example.gastion.ui.theme.components.PrimaryGasButton
 import com.example.gastion.ui.theme.components.TextInput
@@ -23,10 +24,10 @@ import com.example.gastion.ui.theme.components.TextInput
  */
 @Composable
 fun LoginScreen(
-  uiState: LoginUiState,
+  uiState: MainScreens.Login,
   onNameChange: (String) -> Unit,
   onPassChange: (String) -> Unit,
-  onLogin: () -> Unit
+  onLogin: (MainScreens.Login) -> Unit
 ) {
   Scaffold {
     Column(
@@ -40,7 +41,7 @@ fun LoginScreen(
       )
 
       TextInput(
-        value = uiState.name,
+        value = uiState.userName,
         hint = stringResource(id = R.string.usn_hint),
         onValueChange = onNameChange
       )
@@ -53,7 +54,7 @@ fun LoginScreen(
 
       PrimaryGasButton(
         label = stringResource(id = R.string.submit_label),
-        onClick = onLogin
+        onClick = { onLogin(uiState) }
       )
     }
   }

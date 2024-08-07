@@ -1,10 +1,18 @@
 package com.example.gastion.ui.main
 
-import com.example.gastion.ui.core.BaseScreenModel
+import android.location.Location
+import com.example.gastion.ui.core.BaseUiState
+import org.osmdroid.bonuspack.location.POI
 
-sealed interface MainScreens: BaseScreenModel {
+sealed interface MainScreens: BaseUiState {
 
-  data object Login: MainScreens
+  data class Login(
+    val userName: String = "",
+    val password: String = ""
+  ): MainScreens
 
-  data object Maps: MainScreens
+  data class Maps(
+    val myLocation: Location? = null,
+    val gasLocations: ArrayList<POI> = arrayListOf()
+  ): MainScreens
 }

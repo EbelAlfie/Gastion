@@ -45,7 +45,9 @@ abstract class BaseActivity<screens : BaseScreenModel, events : BaseUiEvents> :
 
   @Composable
   open fun LoadingContent() {
-    Loading(isDismissible = true)
+    val data by viewModel.messageState.collectAsState()
+    if (data.isLoading)
+      Loading(isDismissible = true)
   }
 
   @Composable
@@ -54,11 +56,13 @@ abstract class BaseActivity<screens : BaseScreenModel, events : BaseUiEvents> :
     val toastData = data.toastData ?: return
     Toast.makeText(this, stringResource(id = toastData), Toast.LENGTH_LONG)
       .show()
+    viewModel.onToastShown()
   }
 
   @Composable
   open fun AlertSheet() {
-    AlertBottomSheet(null) {}
+    val data by viewModel.messageState.collectAsState()
+    AlertBottomSheet(data.sheetData, viewModel::dismissSheet)
   }
 
   @Composable

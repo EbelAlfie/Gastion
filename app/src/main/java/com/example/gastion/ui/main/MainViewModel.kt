@@ -8,6 +8,9 @@ import com.example.gastion.data.GasRepository
 import com.example.gastion.data.LocationRepository
 import com.example.gastion.data.MemberRepository
 import com.example.gastion.data.model.UserRequest
+import com.example.gastion.ui.core.BaseUiEvents
+import com.example.gastion.ui.core.BaseUiState
+import com.example.gastion.ui.core.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,26 +27,25 @@ class MainViewModel @Inject constructor(
   private val locationRepository: LocationRepository,
   private val gasRepository: GasRepository,
   private val memberRepository: MemberRepository
-) : ViewModel() {
-  //  private val currentInfo: LocationController.SharingLocationInfo? = null
-//  private val liveLocation: LocationActivity.LiveLocation? = null
-  private val location = Location("network")
-  val userLocation = MutableStateFlow<Location?>(null)
-  val nearestGasStations = MutableStateFlow<ArrayList<Location>>(arrayListOf())
+) : BaseViewModel<MainScreens>() {
 
-  val gasLocations = MutableStateFlow<ArrayList<POI>>(arrayListOf())
+  override fun getInitialUiState(): MainScreens  = MainScreens.Login()
 
   @RequiresPermission(anyOf = ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"])
   fun requestLocationUpdate() {
     locationRepository.getCurrentLocation(
       object : LocationRepository.LocationListener {
         override fun onLocationResult(location: Location?) {
-          //search nearest gas station every x meter
-          if (location == null) return
+          setState {
+            (this as? MainScreens.Maps)?.let {
+              //search nearest gas station every x meter
+              if (location == null) return@let null
 
-          operateLocation(location)
+              operateLocation(location)
 
-          userLocation.value = location
+              copy (myLocation = location)
+            }
+          }
         }
       }
     )
@@ -51,17 +53,18 @@ class MainViewModel @Inject constructor(
   }
 
   private fun operateLocation(location: Location) {
-    val pastLocation = userLocation.value
-    if (pastLocation == null || pastLocation.distanceTo(location) >= 3.0) {
+    val pastLocation = (uiState.value as? MainScreens.Maps)?.myLocation ?: return
+    if (pastLocation.distanceTo(location) >= 3.0) {
       searchNearestGasStation(location)
-      publishLatestLocation(location)
+      //publishLatestLocation(location)
     }
   }
 
   private fun searchNearestGasStation(location: Location) {
     viewModelScope.launch(Dispatchers.IO) {
-      gasLocations.value =
+      val gasLocations =
         gasRepository.getNearestGasStation(location, 0.03)
+      setState { (this as? MainScreens.Maps)?.copy(gasLocations = gasLocations) }
     }
   }
 
@@ -69,18 +72,22 @@ class MainViewModel @Inject constructor(
 //    locationRepository.establishConnection()
 //  }
 
-  suspend fun login(
-    userName: String,
-    password: String
-  ) {
+  /** Login event handler functions **/
+  fun login(uiState: MainScreens.Login) {
     val request = UserRequest(
-      userName = userName,
-      password = password
+      userName = uiState.userName,
+      password = uiState.password
     )
     viewModelScope.launch {
       memberRepository.login(request).collectLatest {
 
       }
     }
+  }
+  fun onNameChanged(newName: String) {
+    setState { (this as? MainScreens.Login)?.copy(userName = newName) }
+  }
+  fun onPassChanged(newPass: String) {
+    setState { (this as? MainScreens.Login)?.copy(password = newPass) }
   }
 }

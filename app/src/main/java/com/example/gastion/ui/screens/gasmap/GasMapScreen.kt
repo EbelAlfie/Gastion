@@ -16,6 +16,7 @@ import com.example.gastion.ui.component.BottomSheetContainer
 import com.example.gastion.ui.component.BottomSheetData
 import com.example.gastion.ui.component.BottomSheetErrorContent
 import com.example.gastion.ui.component.BottomSheetState
+import com.example.gastion.ui.main.MainScreens
 import com.example.gastion.ui.main.MainViewModel
 import com.example.gastion.ui.util.permission.Permission
 import com.example.gastion.ui.util.permission.PermissionChecker
@@ -34,12 +35,15 @@ import com.google.maps.android.compose.rememberCameraPositionState
 @Composable
 fun GasMapScreen(
   modifier: Modifier = Modifier,
-  brain: MainViewModel
+  uiState: MainScreens.Maps,
+  requestLocationUpdate: () -> Unit
 ) {
   var permissionState by remember { mutableStateOf(PermissionState()) }
   val bottomSheetState = remember { BottomSheetState<BottomSheetData>() }
 
-  val userLocation by brain.userLocation.collectAsState()
+  val userLocation = uiState.myLocation
+  val gasLocations = uiState.gasLocations
+
   val myLoc by remember(userLocation) {
     mutableStateOf(LatLng(userLocation?.latitude ?: -6.197302, userLocation?.longitude ?: 106.819142))
   }
@@ -67,7 +71,7 @@ fun GasMapScreen(
     permissionListener = object: PermissionResult {
       @SuppressLint("MissingPermission")
       override fun onAllGranted() {
-        brain.requestLocationUpdate()
+        requestLocationUpdate()
       }
 
       override fun onAnyDenied(permission: Permission) {
@@ -99,15 +103,15 @@ fun GasMapScreen(
         snippet = "MEMEMEMEMMEEEE",
         icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
       )
-      brain.gasLocations.collectAsState().value.forEach {
-        Log.d("GASS", it.mDescription)
+      gasLocations.forEach {
         val latLong = LatLng(it.mLocation.latitude, it.mLocation.longitude)
         Marker(
           state = MarkerState(position = latLong),
           title = it.mDescription.substringBefore(","),
           snippet = it.mDescription.substringAfter(","),
           onClick = { marker ->
-            cameraPositionState.position = CameraPosition.fromLatLngZoom(marker.position, 20f)
+            cameraPositionState.position =
+              CameraPosition.fromLatLngZoom(marker.position, 20f)
             false
           }
         )

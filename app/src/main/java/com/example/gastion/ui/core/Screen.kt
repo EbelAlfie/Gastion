@@ -6,14 +6,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 
 @Composable
-fun Screen(
-  model: BaseScreenModel,
-  content: @Composable () -> Unit
+inline fun <reified screen: BaseUiState> Screen(
+  model: BaseUiState,
+  crossinline content: @Composable (screen) -> Unit
 ) {
-  val transitionState = remember { MutableTransitionState(true) }
+  val transitionState = remember { MutableTransitionState(model is screen) }
   AnimatedVisibility(
     visibleState = transitionState
   ) {
-    content()
+    (model as? screen)?.let { content(it) }
   }
 }

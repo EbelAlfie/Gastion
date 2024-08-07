@@ -1,4 +1,4 @@
-package com.example.gastion.ui.core
+package com.example.gastion.ui.core.message
 
 import androidx.annotation.StringRes
 import com.example.gastion.ui.theme.components.SheetData
