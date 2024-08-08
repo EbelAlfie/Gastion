@@ -2,21 +2,15 @@ package com.example.gastion.ui.main
 
 import android.location.Location
 import androidx.annotation.RequiresPermission
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gastion.data.GasRepository
 import com.example.gastion.data.LocationRepository
 import com.example.gastion.data.MemberRepository
 import com.example.gastion.data.model.UserRequest
-import com.example.gastion.ui.core.BaseUiEvents
-import com.example.gastion.ui.core.BaseUiState
 import com.example.gastion.ui.core.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.osmdroid.bonuspack.location.POI
 import javax.inject.Inject
 
 /**

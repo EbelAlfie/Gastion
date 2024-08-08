@@ -19,42 +19,53 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.gastion.ui.theme.components.PrimaryGasButton
+import com.example.gastion.ui.theme.components.SecondaryGasButton
 
 @Composable
 fun BottomSheetErrorContent(
-  sheetData: BottomSheetData?,
+  sheetData: BottomSheetData,
   dismissRequest: (() -> Unit)? = null
 ) {
-  sheetData?.let {
-    Column(
+  Column(
+    modifier = Modifier
+      .background(Color.White)
+      .fillMaxWidth()
+      .padding(16.dp),
+    horizontalAlignment = Alignment.CenterHorizontally,
+    verticalArrangement = Arrangement.Bottom
+  ) {
+    Image(
       modifier = Modifier
-        .background(Color.White)
-        .fillMaxWidth()
-        .padding(16.dp),
-      horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.Bottom
-    ) {
-      Image(
-        modifier = Modifier
-          .height(200.dp)
-          .width(200.dp),
-        contentScale = ContentScale.Fit,
-        painter = painterResource(id = it.image),
-        contentDescription = null
-      )
-      Text(
-        modifier = Modifier.padding(12.dp),
-        text = stringResource(id = it.title),
-        fontWeight = FontWeight.Bold
-      )
-      Text(
-        modifier = Modifier.padding(12.dp),
-        text = stringResource(id = it.content),
-        textAlign = TextAlign.Center
-      )
+        .height(200.dp)
+        .width(200.dp),
+      contentScale = ContentScale.Fit,
+      painter = painterResource(id = sheetData.image),
+      contentDescription = null
+    )
+    Text(
+      modifier = Modifier.padding(12.dp),
+      text = stringResource(id = sheetData.title),
+      fontWeight = FontWeight.Bold
+    )
+    Text(
+      modifier = Modifier.padding(12.dp),
+      text = stringResource(id = sheetData.content),
+      textAlign = TextAlign.Center
+    )
 
+    PrimaryGasButton(
+      label = stringResource(id = sheetData.positiveLabel),
+      onClick = { sheetData.onPositiveClicked?.invoke() }
+    )
 
+    sheetData.negativeLabel?.let {
+      SecondaryGasButton(
+        label = stringResource(id = it),
+        onClick = { sheetData.onNegativeClicked?.invoke()}
+      )
     }
-
   }
+
+
 }

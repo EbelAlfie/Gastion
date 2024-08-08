@@ -10,7 +10,7 @@ data class BottomSheetData(
   @DrawableRes val image: Int,
   @StringRes val title: Int,
   @StringRes val content: Int,
-  @StringRes val positiveLabel: Int? = null,
+  @StringRes val positiveLabel: Int,
   @StringRes val negativeLabel: Int? = null,
   val onDismissRequest: (() -> Unit)? = null,
   val onPositiveClicked: (() -> Unit)? = null,

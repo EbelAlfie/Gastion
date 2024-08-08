@@ -14,11 +14,9 @@ import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -36,7 +34,12 @@ fun AlertBottomSheet(
   data: BottomSheetData?,
   onDismiss: () -> Unit
 ) {
-  val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+  val sheetState = rememberModalBottomSheetState(
+    skipPartiallyExpanded = true,
+    confirmValueChange = {
+      if (it == SheetValue.Hidden) onDismiss.invoke()
+      true
+    })
 
   LaunchedEffect(data) {
     if (data == null) sheetState.hide()
@@ -44,21 +47,26 @@ fun AlertBottomSheet(
   }
 
   BackHandler(data != null, onDismiss)
-  ModalBottomSheet(
-    sheetState = sheetState,
-    onDismissRequest = onDismiss
-  ) {
-    BottomSheetErrorContent(data)
+  data?.let {
+    ModalBottomSheet(
+      sheetState = sheetState,
+      onDismissRequest = onDismiss
+    ) {
+      BottomSheetErrorContent(it)
+      Spacer(
+        modifier = Modifier.windowInsetsBottomHeight(
+          WindowInsets.navigationBarsIgnoringVisibility
+        )
+      )
+    }
   }
-  Spacer(modifier = Modifier.windowInsetsBottomHeight(
-    WindowInsets.navigationBarsIgnoringVisibility
-  ))
+
 }
 
 @Composable
 fun DefaultSheetContent(data: BottomSheetData?) {
   data?.let {
-    Column (
+    Column(
       modifier = Modifier.fillMaxWidth(),
       verticalArrangement = Arrangement.Center,
       horizontalAlignment = Alignment.CenterHorizontally
