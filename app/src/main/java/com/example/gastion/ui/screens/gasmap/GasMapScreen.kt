@@ -1,23 +1,15 @@
 package com.example.gastion.ui.screens.gasmap
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.example.gastion.R
-import com.example.gastion.ui.component.BottomSheetContainer
-import com.example.gastion.ui.component.BottomSheetData
-import com.example.gastion.ui.component.BottomSheetErrorContent
-import com.example.gastion.ui.component.BottomSheetState
 import com.example.gastion.ui.main.MainScreens
-import com.example.gastion.ui.main.MainViewModel
 import com.example.gastion.ui.util.permission.Permission
 import com.example.gastion.ui.util.permission.PermissionChecker
 import com.example.gastion.ui.util.permission.PermissionHelper
@@ -39,7 +31,6 @@ fun GasMapScreen(
   requestLocationUpdate: () -> Unit
 ) {
   var permissionState by remember { mutableStateOf(PermissionState()) }
-  val bottomSheetState = remember { BottomSheetState<BottomSheetData>() }
 
   val userLocation = uiState.myLocation
   val gasLocations = uiState.gasLocations
@@ -59,13 +50,6 @@ fun GasMapScreen(
     permissionState = permissionState,
   )
 
-  BottomSheetContainer(sheetState = bottomSheetState) {
-    BottomSheetErrorContent(
-      sheetData = it.data ?: return@BottomSheetContainer,
-      it.onDismissRequest
-    )
-  }
-
   permissionState = PermissionState(
     permissions = PermissionHelper.locationPermissions,
     permissionListener = object: PermissionResult {
@@ -75,13 +59,7 @@ fun GasMapScreen(
       }
 
       override fun onAnyDenied(permission: Permission) {
-        bottomSheetState.showBottomSheet(
-          BottomSheetData(
-            image = R.drawable.ic_gas_station,
-            title = R.string.permission_denied_title,
-            content = R.string.permission_denied_content
-          )
-        )
+
       }
 
     }

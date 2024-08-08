@@ -73,16 +73,20 @@ class MainViewModel @Inject constructor(
 //  }
 
   /** Login event handler functions **/
-  fun login(uiState: MainScreens.Login) {
-    val request = UserRequest(
-      userName = uiState.userName,
-      password = uiState.password
-    )
-    viewModelScope.launch {
-      memberRepository.login(request).collectLatest {
-
-      }
+  fun login() {
+    (uiState.value as? MainScreens.Login)?.let {
+      val request = UserRequest(
+        userName = it.userName,
+        password = it.password
+      )
+//      viewModelScope.launch {
+//        memberRepository.login(request).collectLatest {
+//
+//        }
+//      }
+      setState { MainScreens.Maps() }
     }
+
   }
   fun onNameChanged(newName: String) {
     setState { (this as? MainScreens.Login)?.copy(userName = newName) }

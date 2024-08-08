@@ -19,7 +19,7 @@ fun TextInput(
   isError: Boolean = false,
   onValueChange: (String) -> Unit
 ) {
-  TextField(
+  OutlinedTextField(
     value = value,
     placeholder = { Text(hint) },
     onValueChange = onValueChange,

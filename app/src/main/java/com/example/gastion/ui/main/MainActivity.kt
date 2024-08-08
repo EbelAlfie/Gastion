@@ -1,5 +1,6 @@
 package com.example.gastion.ui.main
 
+import androidx.activity.compose.BackHandler
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

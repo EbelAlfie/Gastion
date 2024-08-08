@@ -1,6 +1,5 @@
 package com.example.gastion.ui.core
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import com.example.gastion.ui.core.message.MessageState
 import kotlinx.coroutines.flow.MutableStateFlow

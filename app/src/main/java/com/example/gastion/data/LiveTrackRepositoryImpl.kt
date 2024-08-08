@@ -15,7 +15,7 @@ class LiveTrackRepositoryImpl @Inject constructor(
   private val memberService: MemberService
 ): LiveTrackRepository {
   override fun establishConnection() {
-    webSocketService.establishConnection()
+    webSocketService.establishConnection("")
   }
 
   fun sendLocation(location: LocationMessageModel) {

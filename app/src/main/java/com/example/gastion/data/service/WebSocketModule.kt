@@ -17,9 +17,9 @@ class WebSocketService @Inject constructor(
   private var webSocket : WebSocket? = null
 
   fun establishConnection(
-    shipmentNo: String,
-    url: String = "${BuildConfig.wss_url}track/$shipmentNo",
-    token: String
+    shipmentNo: String = "",
+    url: String = "${BuildConfig.wss_url}track",
+    token: String = ""
   ) {
     webSocket = httpClient.newWebSocket(buildRequest(url, token), object : WebSocketListener() {
         override fun onOpen(webSocket: WebSocket, response: Response) {
