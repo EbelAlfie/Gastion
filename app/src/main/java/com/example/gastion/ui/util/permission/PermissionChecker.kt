@@ -13,7 +13,7 @@ fun PermissionChecker(
   permissionState: PermissionState
 ) {
   with (permissionState) {
-    if (permissions.isEmpty()) permissionListener?.onAllGranted()
+    if (permissions.isEmpty()) return
 
     var permissionLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>? =
       rememberLauncherForActivityResult(
