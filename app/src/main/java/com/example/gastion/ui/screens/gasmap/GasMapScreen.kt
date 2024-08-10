@@ -28,7 +28,8 @@ import com.google.maps.android.compose.rememberCameraPositionState
 fun GasMapScreen(
   modifier: Modifier = Modifier,
   uiState: MainScreens.Maps,
-  requestLocationUpdate: () -> Unit
+  requestLocationUpdate: () -> Unit,
+  onPermissionDenied: (Permission) -> Unit
 ) {
   var permissionState by remember { mutableStateOf(PermissionState()) }
 
@@ -59,7 +60,7 @@ fun GasMapScreen(
       }
 
       override fun onAnyDenied(permission: Permission) {
-
+        onPermissionDenied.invoke(permission)
       }
 
     }

@@ -2,6 +2,8 @@
   <string name="app_name">Gastion</string>
 
   <string name="login_title">Login</string>
+  <string name="login_sub_header">Buat akun atau login terlebih dahulu</string>
+
   <string name="usn_hint">Username</string>
   <string name="password_hint">Password</string>
   <string name="submit_label">Submit</string>

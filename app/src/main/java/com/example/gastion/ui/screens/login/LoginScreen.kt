@@ -47,10 +47,15 @@ fun LoginScreen(
     ) {
       Text(
         text = stringResource(id = R.string.login_title),
-        style = TypographyToken.FontBigBold
+        style = TypographyToken.FontHugeBold
       )
 
       Spacer(modifier = Modifier.height(20.dp))
+
+      Text(
+        text = stringResource(id = R.string.login_sub_header),
+        style = TypographyToken.FontSmallNormal
+      )
 
       TextInput(
         value = uiState.userName,

@@ -36,7 +36,8 @@ class MainActivity : BaseActivity<MainScreens>() {
       Screen<Maps>(screen) {
         GasMapScreen(
           uiState = it,
-          requestLocationUpdate = viewModel::requestLocationUpdate
+          requestLocationUpdate = viewModel::requestLocationUpdate,
+          onPermissionDenied = viewModel::onPermissionDenied
         )
       }
     }

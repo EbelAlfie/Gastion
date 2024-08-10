@@ -8,6 +8,7 @@ import com.example.gastion.data.LocationRepository
 import com.example.gastion.data.MemberRepository
 import com.example.gastion.data.model.UserRequest
 import com.example.gastion.ui.core.BaseViewModel
+import com.example.gastion.ui.util.permission.Permission
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -88,4 +89,6 @@ class MainViewModel @Inject constructor(
   fun onPassChanged(newPass: String) {
     setState { (this as? MainScreens.Login)?.copy(password = newPass) }
   }
+
+  fun onPermissionDenied(permission: Permission) {}
 }

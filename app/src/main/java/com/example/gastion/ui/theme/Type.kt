@@ -65,4 +65,14 @@ internal object TypographyToken {
     fontSize = TextSize.sizeBig,
     fontWeight = FontWeight.Normal
   )
+  val FontHugeBold: TextStyle = TextStyle(
+    color = Color.Black,
+    fontSize = TextSize.sizeHuge,
+    fontWeight = FontWeight.Bold
+  )
+  val FontHugeNormal: TextStyle = TextStyle(
+    color = Color.Black,
+    fontSize = TextSize.sizeHuge,
+    fontWeight = FontWeight.Normal
+  )
 }
