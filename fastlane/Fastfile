@@ -1,0 +1,32 @@
+default_platform(:android)
+
+  platform :android do
+    versionCode = ENV['VERSION_CODE']
+    versionName = ENV['VERSION_NAME']
+    releaseNotes = ENV['RELEASE_NOTES'].gsub("\n", "\n")
+
+    desc "Build"
+    lane :build do
+    gradle(task:"clean")
+    build_android_app(
+      task: "assemble",
+      build_type: "debug",
+      properties: {
+        "versionCode" => versionCode,
+        "versionName" => versionName,
+      }
+    )
+    end
+
+    lane :deploy_to_firebase do |options|
+    firebase_app_distribution(
+        app: "#{firebaseAppIdDebug}",
+        release_notes: releaseNotes,
+        firebase_cli_token: "#{fastlaneFirebaseCliToken}",
+        debug: true,
+        apk_path: "app/build/outputs/apk/debug/app-debug.apk"
+    )
+    end
+
+  end
+end

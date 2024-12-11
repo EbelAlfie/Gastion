@@ -20,7 +20,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class LocationRepositoryImpl @Inject constructor(
-  @ApplicationContext private val appContext: Context
+  @ApplicationContext private val appContext: Context,
 ) : LocationRepository {
 
   private val locationRequest =
@@ -54,7 +54,7 @@ class LocationRepositoryImpl @Inject constructor(
       }
   }
 
-  override fun checkGpsSettings() {
+  private fun checkGpsSettings() {
     val request = LocationSettingsRequest.Builder()
       .addLocationRequest(locationRequest)
       .build()

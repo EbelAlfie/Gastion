@@ -6,7 +6,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
+import com.example.gastion.BuildConfig
+import com.example.gastion.data.service.MemberService
+import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -25,5 +29,21 @@ object NetworkModule {
       .connectTimeout(15, TimeUnit.SECONDS)
       .readTimeout(15, TimeUnit.SECONDS)
       .build()
+  }
+
+  @Provides
+  fun providesRetrofit(
+    okHttpClient: OkHttpClient
+  ): Retrofit {
+    return Retrofit.Builder()
+      .baseUrl(BuildConfig.base_url)
+      .addConverterFactory(GsonConverterFactory.create())
+      .client(okHttpClient)
+      .build()
+  }
+
+  @Provides
+  fun createMemberApi(retrofit: Retrofit): MemberService {
+    return retrofit.create(MemberService::class.java)
   }
 }
